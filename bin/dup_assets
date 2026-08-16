@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require_relative "../dup_assets"
+
+root = ARGV[0] || "app/assets"
+
+unless Dir.exist?(root)
+  warn "#{root}: directory not found"
+  exit 1
+end
+
+groups = find_duplicate_assets(root)
+
+if groups.empty?
+  puts "No duplicate assets found."
+  exit 0
+end
+
+wasted = groups.sum { |g| File.size(g.first) * (g.size - 1) }
+
+groups.each do |group|
+  warn "Duplicates:"
+  group.each { |path| warn "  #{path}" }
+end
+
+warn "\nWasted bytes: #{wasted}"
+exit 1
