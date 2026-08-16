@@ -96,4 +96,12 @@ class DupAssetsTest < Minitest::Test
       assert_empty find_duplicate_assets(dir)
     end
   end
+
+  def test_symlinks_not_flagged
+    Dir.mktmpdir do |dir|
+      real = write(dir, "icon.png", "content")
+      File.symlink(real, File.join(dir, "icon_link.png"))
+      assert_empty find_duplicate_assets(dir)
+    end
+  end
 end
