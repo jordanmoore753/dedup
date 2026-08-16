@@ -1,6 +1,6 @@
 require "minitest/autorun"
 require "tmpdir"
-require_relative "../lib/dup_assets/finder"
+require_relative "../lib/dedup/finder"
 
 class FinderTest < Minitest::Test
   def write(dir, filename, content)
@@ -13,7 +13,7 @@ class FinderTest < Minitest::Test
     Dir.mktmpdir do |dir|
       write(dir, "a.png", "aaa")
       write(dir, "b.png", "bbb")
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 
@@ -23,7 +23,7 @@ class FinderTest < Minitest::Test
       sub2 = File.join(dir, "team2"); Dir.mkdir(sub2)
       write(sub1, "icon.png", "same content")
       write(sub2, "icon.png", "same content")
-      groups = DupAssets::Finder.call(dir)
+      groups = Dedup::Finder.call(dir)
       assert_equal 1, groups.size
       assert_equal 2, groups.first.size
     end
@@ -32,7 +32,7 @@ class FinderTest < Minitest::Test
   def test_three_way_duplicate
     Dir.mktmpdir do |dir|
       3.times { |i| write(dir, "icon#{i}.png", "same") }
-      groups = DupAssets::Finder.call(dir)
+      groups = Dedup::Finder.call(dir)
       assert_equal 1, groups.size
       assert_equal 3, groups.first.size
     end
@@ -42,7 +42,7 @@ class FinderTest < Minitest::Test
     Dir.mktmpdir do |dir|
       2.times { |i| write(dir, "a#{i}.png", "content-a") }
       2.times { |i| write(dir, "b#{i}.png", "content-b") }
-      assert_equal 2, DupAssets::Finder.call(dir).size
+      assert_equal 2, Dedup::Finder.call(dir).size
     end
   end
 
@@ -51,7 +51,7 @@ class FinderTest < Minitest::Test
       write(dir, "unique.png", "only one")
       write(dir, "dup1.png", "same")
       write(dir, "dup2.png", "same")
-      groups = DupAssets::Finder.call(dir)
+      groups = Dedup::Finder.call(dir)
       assert_equal 1, groups.size
       groups.first.each { |p| refute_match(/unique/, p) }
     end
@@ -61,7 +61,7 @@ class FinderTest < Minitest::Test
     Dir.mktmpdir do |dir|
       write(dir, "script.rb", "same content")
       write(dir, "helper.rb", "same content")
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 
@@ -69,7 +69,7 @@ class FinderTest < Minitest::Test
     Dir.mktmpdir do |dir|
       write(dir, "a.svg", '<svg id="export-1"><path d="M0 0"/></svg>')
       write(dir, "b.svg", '<svg id="export-2"><path d="M0 0"/></svg>')
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 
@@ -77,20 +77,20 @@ class FinderTest < Minitest::Test
     Dir.mktmpdir do |dir|
       real = write(dir, "icon.png", "content")
       File.symlink(real, File.join(dir, "icon_link.png"))
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 
   def test_empty_directory
     Dir.mktmpdir do |dir|
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 
   def test_single_file
     Dir.mktmpdir do |dir|
       write(dir, "solo.png", "alone")
-      assert_empty DupAssets::Finder.call(dir)
+      assert_empty Dedup::Finder.call(dir)
     end
   end
 end

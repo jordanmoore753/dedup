@@ -1,7 +1,7 @@
-require_relative "dup_assets/finder"
-require_relative "dup_assets/reporter"
+require_relative "dedup/finder"
+require_relative "dedup/reporter"
 
-module DupAssets
+module Dedup
   DEFAULT_ROOT = "app/assets"
 
   private_constant :DEFAULT_ROOT

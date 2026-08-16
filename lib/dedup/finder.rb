@@ -1,7 +1,7 @@
 require "digest"
 require "find"
 
-module DupAssets
+module Dedup
   module Finder
     ASSET_EXTENSIONS = %w[.png .jpg .jpeg .gif .svg .ico .webp].freeze
 

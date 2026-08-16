@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 $LOAD_PATH.unshift(File.join(__dir__, "..", "lib"))
-require "dup_assets"
+require "dedup"
 
 root = ARGV[0]
 
@@ -10,4 +10,4 @@ if root && !Dir.exist?(root)
   exit 1
 end
 
-exit root ? DupAssets.call(root) : DupAssets.call
+exit root ? Dedup.call(root) : Dedup.call

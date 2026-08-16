@@ -1,6 +1,6 @@
 require "minitest/autorun"
 require "tmpdir"
-require_relative "../lib/dup_assets/reporter"
+require_relative "../lib/dedup/reporter"
 
 class ReporterTest < Minitest::Test
   def write(dir, filename, content)
@@ -10,18 +10,18 @@ class ReporterTest < Minitest::Test
   end
 
   def test_no_duplicates_prints_to_stdout
-    out, _ = capture_io { DupAssets::Reporter.call([]) }
+    out, _ = capture_io { Dedup::Reporter.call([]) }
     assert_includes out, "No duplicate assets found."
   end
 
   def test_no_duplicates_produces_no_stderr
-    _, err = capture_io { DupAssets::Reporter.call([]) }
+    _, err = capture_io { Dedup::Reporter.call([]) }
     assert_empty err
   end
 
   def test_no_duplicates_returns_exit_clean
     exit_code = nil
-    capture_io { exit_code = DupAssets::Reporter.call([]) }
+    capture_io { exit_code = Dedup::Reporter.call([]) }
     assert_equal 0, exit_code
   end
 
@@ -30,7 +30,7 @@ class ReporterTest < Minitest::Test
       a = write(dir, "a.png", "same")
       b = write(dir, "b.png", "same")
       exit_code = nil
-      capture_io { exit_code = DupAssets::Reporter.call([[a, b]]) }
+      capture_io { exit_code = Dedup::Reporter.call([[a, b]]) }
       assert_equal 1, exit_code
     end
   end
@@ -39,7 +39,7 @@ class ReporterTest < Minitest::Test
     Dir.mktmpdir do |dir|
       a = write(dir, "a.png", "same")
       b = write(dir, "b.png", "same")
-      _, err = capture_io { DupAssets::Reporter.call([[a, b]]) }
+      _, err = capture_io { Dedup::Reporter.call([[a, b]]) }
       assert_includes err, a
       assert_includes err, b
     end
@@ -49,7 +49,7 @@ class ReporterTest < Minitest::Test
     Dir.mktmpdir do |dir|
       a = write(dir, "a.png", "x" * 1_048_576)
       b = write(dir, "b.png", "x" * 1_048_576)
-      _, err = capture_io { DupAssets::Reporter.call([[a, b]]) }
+      _, err = capture_io { Dedup::Reporter.call([[a, b]]) }
       assert_includes err, "Wasted: 1.0 MB"
     end
   end

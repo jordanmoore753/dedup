@@ -1,4 +1,4 @@
-module DupAssets
+module Dedup
   module Reporter
     BYTES_PER_MB = 1_048_576.0
     EXIT_CLEAN = 0
