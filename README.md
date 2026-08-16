@@ -10,6 +10,8 @@ Over time, it's easy for these duplicate assets to accumulate and grow into siza
 
 I wanted to solve this problem for the one-hour interview challenge because it is a real problem encountered by developers every day and causes production headaches. My goal for this was to build something that I could use immediately in my work's Rails codebase, or even someone at Corporate Tools could use it on one of their codebases and find some duplicated assets.
 
+In fact, my work's codebase has quite a few duplicates: 91.5MB of duplicates found!
+
 ## Install
 
 ```
