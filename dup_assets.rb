@@ -7,6 +7,7 @@ def find_duplicate_assets(root)
   by_hash = Hash.new { |h, k| h[k] = [] }
 
   Find.find(root) do |path|
+    next if File.symlink?(path)
     next unless File.file?(path)
     next unless ASSET_EXTENSIONS.include?(File.extname(path).downcase)
 
