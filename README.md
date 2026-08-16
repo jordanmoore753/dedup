@@ -8,7 +8,7 @@ I have encountered the following problem frequently in engineering departments. 
 
 Over time, it's easy for these duplicate assets to accumulate and grow into sizable chunks of space taken up on the server or in a CDN. However, the bigger problem is UI inconsistencies. Imagine that product asks for all download buttons to have an updated version of the `download.svg` file. However, that `download.svg` file is in two separate spots of the codebase. Whichever team picks up the ticket to update the download buttons won't realize that they have to replace two SVGs instead of one, which will leave an uncertain amount of the UI with inconsistent download styling. This is the larger of the two problems because image assets typically don't take up a ton of space for an application.
 
-I wanted to solve this problem for the one-hour interview challenge because it is a real problem encountered by developers every day and causes production headaches. My goal for this was to build something that I could use immediately in my work's Rails codebase, or even someone at Corporate Tools could use it on one of their codebases.
+I wanted to solve this problem for the one-hour interview challenge because it is a real problem encountered by developers every day and causes production headaches. My goal for this was to build something that I could use immediately in my work's Rails codebase, or even someone at Corporate Tools could use it on one of their codebases and find some duplicated assets.
 
 ## Install
 
