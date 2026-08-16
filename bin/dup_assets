@@ -3,11 +3,11 @@
 $LOAD_PATH.unshift(File.join(__dir__, "..", "lib"))
 require "dup_assets"
 
-root = ARGV[0] || "app/assets"
+root = ARGV[0]
 
-unless Dir.exist?(root)
+if root && !Dir.exist?(root)
   warn "#{root}: directory not found"
   exit 1
 end
 
-exit DupAssets.call(root)
+exit root ? DupAssets.call(root) : DupAssets.call
